@@ -1,16 +1,10 @@
-const checkboxWon = document.getElementById('checkbox_won');
-setFilter('WON', checkboxWon.checked)
+$("input[data-filter]").each(function() {
+  setFilter(this.name, this.checked)
 
-const checkboxLose = document.getElementById('checkbox_lose');
-setFilter('LOSE', checkboxLose.checked)
-
-checkboxWon.onchange = function () {  
-  setFilter('WON', this.checked)
-}
-
-checkboxLose.onchange = function () {  
-  setFilter('LOSE', this.checked)
-}
+  this.addEventListener('change', function() {
+    setFilter(this.name, this.checked)
+  })
+})
 
 function setFilter(name, checked) {
   const $rows = $(`[data-status]:contains('${name}')`).parent()

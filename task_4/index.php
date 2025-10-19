@@ -27,12 +27,12 @@
         <fieldset style="display: flex; flex-direction: column; gap: 0.5em; max-width: fit-content;">
             <legend>Filters</legend>
             <div>
-                <input type="checkbox" id="checkbox_won" name="won" checked>
+                <input type="checkbox" data-filter id="checkbox_won" name="WON" checked>
                 <label for="checkbox_won">Won</label>
             </div>
 
             <div>
-                <input type="checkbox" id="checkbox_lose" name="lose" checked>
+                <input type="checkbox" data-filter id="checkbox_lose" name="LOSE" checked>
                 <label for="checkbox_lose">Lose</label>
             </div>
         </fieldset>
