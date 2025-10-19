@@ -25,7 +25,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'art' => 'required',
-            'price' => 'required',
+            'price' => 'required|integer',
         ]);
 
         $input = $request->all();
@@ -41,23 +41,38 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, int $productId)
     {
-        $input = $request->all();
-
-        $product->update([
-            'name' => $input['name'],
-            'art' => $input['art'],
-            'price' => $input['price'],
-            'quantity' => $input['quantity'],
+        $request->validate([
+            'price' => 'sometimes|integer',
+            'quantity' => 'sometimes|integer',
         ]);
+
+        $product = Product::findOrFail($productId);
+
+        if ($request->filled('name')) {
+            $product->name = $request->input('name');
+        }
+        if ($request->filled('art')) {
+            $product->art = $request->input('art');
+        }
+        if ($request->filled('price')) {
+            $product->price = $request->input('price');
+        }
+        if ($request->filled('quantity')) {
+            $product->quantity = $request->input('quantity');
+        }
+
+        $product->save();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(int $productId)
     {
+        $product = Product::findOrFail($productId);
+
         $product->delete();
     }
 }
