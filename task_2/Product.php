@@ -113,7 +113,7 @@ class Product
     }
 
     /**
-     * Update or create record
+     * Create or update record
      * 
      * @param int &$updated
      * @param int &$created
