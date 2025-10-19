@@ -4,6 +4,13 @@ class Product
 {
     private PDO $pdo;
 
+    /**
+     * Class constructor
+     * 
+     * @param PDO $pdo
+     * 
+     * @return void
+     */
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
@@ -19,6 +26,13 @@ class Product
         ");
     }
 
+    /**
+     * Seed table
+     * 
+     * @param string $fileName
+     * 
+     * @return void
+     */
     public function seedTable(string $fileName): void
     {
         $file = fopen($fileName, 'r'); 
@@ -51,6 +65,18 @@ class Product
         echo "Updated: $updated" . PHP_EOL;
     }
 
+    /**
+     * Update or create record
+     * 
+     * @param int &$updated
+     * @param int &$created
+     * @param string $name
+     * @param string $art
+     * @param int $price
+     * @param int $quantity
+     * 
+     * @return void
+     */
     private function updateOrCreate(
         int &$updated, 
         int &$created, 
@@ -86,6 +112,18 @@ class Product
         }
     }
 
+    /**
+     * Update or create record
+     * 
+     * @param int &$updated
+     * @param int &$created
+     * @param string $name
+     * @param string $art
+     * @param int $price
+     * @param int $quantity
+     * 
+     * @return void
+     */
     private function createOrUpdate(
         int &$updated, 
         int &$created, 
