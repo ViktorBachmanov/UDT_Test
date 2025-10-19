@@ -38,8 +38,8 @@ class Product
                     $isFirstLine = false;
                     continue;
                 }
-                // print_r($data);
-                $this->updateOrCreate($updated, $created, ...$data);
+                // $this->updateOrCreate($updated, $created, ...$data);
+                $this->createOrUpdate($updated, $created, ...$data);
             }
         } catch (Exception $e) {
             echo 'Seed error' . PHP_EOL . $e;
@@ -82,6 +82,41 @@ class Product
             $rslt = $stmt->execute($compArr);
             if ($rslt) {
                 $created++;
+            }
+        }
+    }
+
+    private function createOrUpdate(
+        int &$updated, 
+        int &$created, 
+        string $name, 
+        string $art, 
+        int $price, 
+        int $quantity
+    ): void {
+        $compArr = compact(['name', 'art', 'price', 'quantity']);
+
+        try {
+            $query = 'INSERT INTO `product` VALUES (:name, :art, :price, :quantity)';
+            $stmt = $this->pdo->prepare($query);
+            $rslt = $stmt->execute($compArr);
+            if ($rslt) {
+                $created++;
+            }
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000 && $e->errorInfo[1] == 1062) {   // Duplicate entry
+                $query = "UPDATE `product` 
+                    SET price = :price, quantity = :quantity 
+                    WHERE name = :name 
+                    AND art = :art";
+                $stmt = $this->pdo->prepare($query);
+                $rslt = $stmt->execute($compArr);
+                if ($rslt) {
+                    $updated++;
+                }
+            } else {
+                echo $e . PHP_EOL;
+                exit (1);
             }
         }
     }
