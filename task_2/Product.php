@@ -4,14 +4,9 @@ class Product
 {
     private PDO $pdo;
 
-    public function __construct()
+    public function __construct(PDO $pdo)
     {
-        try {
-            $this->pdo = new PDO('mysql:host=localhost;dbname=udt', 'udt_user', 'secretPassword123%');
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOEception $e) {
-            echo "DB connect error";
-        }
+        $this->pdo = $pdo;
 
         $this->pdo->query('DROP TABLE IF EXISTS `product`');
         $this->pdo->query("CREATE TABLE `product` (
@@ -43,7 +38,7 @@ class Product
                     $isFirstLine = false;
                     continue;
                 }
-                print_r($data);
+                // print_r($data);
                 $this->updateOrCreate($updated, $created, ...$data);
             }
         } catch (Exception $e) {
@@ -54,14 +49,6 @@ class Product
 
         echo "Created: $created" . PHP_EOL;
         echo "Updated: $updated" . PHP_EOL;
-    }
-
-    private function seedRow(string $name, string $art, int $price, int $quantity): void 
-    {
-        $query = 'INSERT INTO `product` VALUES (:name, :art, :price, :quantity)';
-        $stmt = $this->pdo->prepare($query);
-        $compArr = compact(['name', 'art', 'price', 'quantity']);
-        $stmt->execute($compArr);
     }
 
     private function updateOrCreate(int &$updated, int &$created, string $name, string $art, int $price, int $quantity): void
