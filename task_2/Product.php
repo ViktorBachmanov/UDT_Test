@@ -8,13 +8,13 @@ class Product
     {
         $this->pdo = $pdo;
 
-        $this->pdo->query('DROP TABLE IF EXISTS `product`');
-        $this->pdo->query("CREATE TABLE `product` (
-                `name` varchar(255) COLLATE utf8mb4_unicode_ci,
-                `art` varchar(100) COLLATE utf8mb4_unicode_ci,
-                `price` mediumint unsigned NOT NULL COMMENT 'rub',
-                `quantity` tinyint unsigned NOT NULL DEFAULT 0,
-                PRIMARY KEY (`name`, `art`)
+        $this->pdo->query('DROP TABLE IF EXISTS product');
+        $this->pdo->query("CREATE TABLE product (
+                name varchar(255) COLLATE utf8mb4_unicode_ci,
+                art varchar(100) COLLATE utf8mb4_unicode_ci,
+                price mediumint unsigned NOT NULL COMMENT 'rub',
+                quantity tinyint unsigned NOT NULL DEFAULT 0,
+                PRIMARY KEY (name, art)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ");
     }
@@ -51,8 +51,14 @@ class Product
         echo "Updated: $updated" . PHP_EOL;
     }
 
-    private function updateOrCreate(int &$updated, int &$created, string $name, string $art, int $price, int $quantity): void
-    {
+    private function updateOrCreate(
+        int &$updated, 
+        int &$created, 
+        string $name, 
+        string $art, 
+        int $price, 
+        int $quantity
+    ): void {
         $query = 'SELECT * FROM `product` WHERE name = :name AND `art` = :art';
         $compArr = compact(['name', 'art']);
         $stmt = $this->pdo->prepare($query);
